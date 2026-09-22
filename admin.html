@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>סקר מסורת – מסך מדריכה</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <script src="qrcode.js"></script>
+</head>
+<body class="admin">
+  <header class="top">
+    <h1>סקר מסורת – תוצאות בזמן אמת</h1>
+  </header>
+  <main class="wrap">
+    <section class="toolbar">
+      <div class="panel count"><b id="n">0</b><span>ענו עד עכשיו</span></div>
+      <div class="panel join">
+        <div id="qr"></div>
+        <div>
+          <div style="color:var(--muted);font-size:14px">סורקים או נכנסים לכתובת:</div>
+          <div class="url" id="url"></div>
+        </div>
+      </div>
+      <div class="panel controls">
+        <span id="status"><span class="status-dot"></span>פתוח</span>
+        <button class="btn ghost" id="toggleOpen">סגירת הצבעה</button>
+        <button class="btn ghost" id="toggleNat">הצגת תוצאות ארציות</button>
+        <button class="btn" id="newRound">סבב חדש</button>
+      </div>
+    </section>
+    <section class="charts hide-nat" id="charts"></section>
+    <p class="foot">הנתונים הארציים: הקונגרס הישראלי</p>
+  </main>
+  <script type="module" src="admin.js"></script>
+</body>
+</html>

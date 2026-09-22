@@ -1,0 +1,29 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // תשובות: כולם יכולים לשלוח ולקרוא, אף אחד לא יכול לשנות או למחוק
+    match /responses/{id} {
+      allow read: if true;
+      allow create: if request.resource.data.keys().hasOnly(['session', 'activities', 'values', 'createdAt'])
+        && request.resource.data.session is string
+        && request.resource.data.activities is list
+        && request.resource.data.activities.size() <= 12
+        && request.resource.data.values is list
+        && request.resource.data.values.size() <= 6
+        && request.resource.data.createdAt == request.time
+        && get(/databases/$(database)/documents/config/current).data.open == true
+        && get(/databases/$(database)/documents/config/current).data.session == request.resource.data.session;
+      allow update, delete: if false;
+    }
+
+    // הגדרות הסבב (מספר סבב + פתוח/סגור)
+    match /config/{docId} {
+      allow read: if true;
+      allow write: if docId == 'current'
+        && request.resource.data.keys().hasOnly(['session', 'open'])
+        && request.resource.data.session is string
+        && request.resource.data.open is bool;
+    }
+  }
+}
