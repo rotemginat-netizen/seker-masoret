@@ -35,7 +35,7 @@ function render() {
     <div class="progress">${QUESTIONS.map((_, i) => `<span class="${i <= step ? 'on' : ''}"></span>`).join('')}</div>
     <h2 class="qtitle">${q.title}</h2>
     <p class="qhint">${q.hint}</p>
-    <div class="opts">
+    <div class="opts${q.single ? ' single' : ''}">
       ${q.options.map(o => `
         <button class="opt" type="button" data-id="${o.id}" aria-pressed="${chosen.has(o.id)}">
           <span class="ic">${o.icon}</span><span class="tx">${o.label}</span><span class="ck">✓</span>
@@ -45,15 +45,21 @@ function render() {
 
   app.querySelectorAll('.opt').forEach(btn => btn.addEventListener('click', () => {
     const id = btn.dataset.id;
-    chosen.has(id) ? chosen.delete(id) : chosen.add(id);
-    btn.setAttribute('aria-pressed', chosen.has(id));
+    if (q.single) {
+      chosen.clear(); chosen.add(id);
+      app.querySelectorAll('.opt').forEach(b => b.setAttribute('aria-pressed', chosen.has(b.dataset.id)));
+      document.getElementById('next').disabled = false;
+    } else {
+      chosen.has(id) ? chosen.delete(id) : chosen.add(id);
+      btn.setAttribute('aria-pressed', chosen.has(id));
+    }
   }));
 
   const last = step === QUESTIONS.length - 1;
   actions.hidden = false;
   actions.innerHTML = `
     ${step > 0 ? '<button class="btn ghost" id="back">הקודם</button>' : ''}
-    <button class="btn" id="next">${last ? 'שליחה' : 'הבא'}</button>`;
+    <button class="btn" id="next" ${q.single && !chosen.size ? 'disabled' : ''}>${last ? 'שליחה' : 'הבא'}</button>`;
   document.getElementById('back')?.addEventListener('click', () => { step--; render(); scrollTo(0, 0); });
   document.getElementById('next').addEventListener('click', () => {
     if (!last) { step++; render(); scrollTo(0, 0); return; }
@@ -69,8 +75,7 @@ async function submit() {
   try {
     await addDoc(collection(db, 'responses'), {
       session,
-      activities: [...answers.activities],
-      values: [...answers.values],
+      ...Object.fromEntries(QUESTIONS.map(q => [q.id, [...answers[q.id]]])),
       createdAt: serverTimestamp(),
     });
     store.set(answeredKey(), '1');

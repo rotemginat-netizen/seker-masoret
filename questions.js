@@ -1,5 +1,19 @@
-// השאלות בסקר + התוצאות הארציות (סקר הקונגרס הישראלי) להשוואה
+// השאלות בסקר. national = התוצאה הארצית להשוואה (הקונגרס הישראלי); בלי national – אין פס השוואה.
+// single: true = אפשר לבחור רק תשובה אחת
 export const QUESTIONS = [
+  {
+    id: 'identity',
+    single: true,          // בחירה אחת בלבד
+    title: 'איך אני מגדיר/ה את עצמי?',
+    hint: 'בחרו תשובה אחת',
+    options: [
+      { id: 'secular',     icon: '🙂', label: 'חילוני/ת' },
+      { id: 'traditional', icon: '🕯️', label: 'מסורתי/ת' },
+      { id: 'religious',   icon: '✡️', label: 'דתי/ת' },
+      { id: 'haredi',      icon: '🎩', label: 'חרדי/ת' },
+      { id: 'other',       icon: '✨', label: 'אחר/ת' },
+    ],
+  },
   {
     id: 'activities',
     title: 'איזה מהפעילויות הבאות אתם נוהגים לעשות?',

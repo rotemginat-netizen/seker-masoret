@@ -30,13 +30,13 @@ chartsEl.innerHTML = QUESTIONS.map(q => `
           <div class="lbl"><span class="ic">${o.icon}</span><span>${o.label}</span></div>
           <div class="track">
             <div class="b ours"><div class="fill"></div><span class="val">0%</span></div>
-            <div class="b nat"><div class="fill" style="width:${o.national * 0.85}%"></div><span class="val">${o.national}%</span></div>
+            ${o.national != null ? `<div class="b nat"><div class="fill" style="width:${o.national * 0.85}%"></div><span class="val">${o.national}%</span></div>` : ''}
           </div>
         </div>`).join('')}
     </div>
     <div class="legend">
       <span><i style="background:linear-gradient(270deg,var(--cyan),var(--blue))"></i>הקבוצה שלנו</span>
-      <span class="nat-l"><i style="background:var(--grey)"></i>הציבור הישראלי</span>
+      ${q.options.some(o => o.national != null) ? `<span class="nat-l"><i style="background:var(--grey)"></i>הציבור הישראלי</span>` : ''}
     </div>
   </article>`).join('');
 

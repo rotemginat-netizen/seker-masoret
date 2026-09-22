@@ -56,6 +56,7 @@ body {
   border: 2px solid var(--grey); display: grid; place-items: center;
   color: #fff; font-size: 16px; font-weight: 800;
 }
+.opts.single .ck { border-radius: 50%; }
 .opt[aria-pressed="true"] { border-color: var(--blue); background: #fff; }
 .opt[aria-pressed="true"] .ck { background: var(--blue); border-color: var(--blue); }
 .bar-actions {
